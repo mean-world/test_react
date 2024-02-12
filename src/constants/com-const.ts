@@ -1,6 +1,7 @@
 // api 設定
 export const API = {
-  baseURL: 'http://127.0.0.1:3000/',
+  // baseURL: 'http://192.168.0.174:3000',
+  baseURL: 'http://127.0.0.1:3000' ,
 };
 
 // 預設模型選項
