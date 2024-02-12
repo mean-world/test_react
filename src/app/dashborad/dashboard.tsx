@@ -71,8 +71,7 @@ export function Dashboard(props: DashboardProps) {
   };
 
   return (
-    <>
-      <div className='setting-section'>
+    <div className='setting-section'>
         <section className='dashboard-section section1'>
           <h2 className='title'>設定分散式訓練環境</h2>
           <Row style={{ marginTop: '12px' }} gutter={12} align={'middle'} justify={'space-between'}>
@@ -180,7 +179,6 @@ export function Dashboard(props: DashboardProps) {
           }
         </section>
       </div >
-    </>
   );
 }
 
