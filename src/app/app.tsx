@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import Dashboard from './dashborad/dashboard';
 import React from 'react';
 import { Layout } from 'antd';
+import { RootRoute } from 'src/routers';
 
 const { Header, Content, Footer } = Layout;
 
@@ -26,7 +26,7 @@ const App: React.FC = () => {
           background: '#fefefe',
         }}
       >
-        <Dashboard />
+        <RootRoute />
       </Content>
 
       <Footer style={{ textAlign: 'center' }}>Design ©2023 Created by </Footer>
