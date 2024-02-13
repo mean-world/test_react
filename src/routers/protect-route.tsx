@@ -8,9 +8,9 @@ export function ProtectRoute(_props: ProtectRouteProps) {
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLogin) navigate('/login');
-  }, []);
+  // useEffect(() => {
+  //   if (!isLogin) navigate('/login');
+  // }, []);
 
   return <Outlet />;
 }
