@@ -1,15 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { UserOutlined } from '@ant-design/icons';
-import { Button, Card, Flex, Input } from 'antd';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Button, Card, Flex, Input, message } from 'antd';
+import { SetStateAction, useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
-  // const [iscreateuser, setIscreateuser] = useState(false);
+  const [namespace, setnamespace] = useState('');
+  const onChange_namespace = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
+    setnamespace(event.target.value);
+  };
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (!iscreateuser) navigate('/');
-  // }, [iscreateuser]);
 
   return (
     <div style={{ height: '100%' }}>
@@ -22,11 +24,18 @@ const Login: React.FC = () => {
             prefix={<UserOutlined />}
             maxLength={10}
             style={{ width: 150 }}
+            value={namespace}
+            onChange={onChange_namespace}
           />
           <br />
           <Button
             type="primary"
-            onClick={() => navigate('/', { state: {} })}
+            // onClick={() =>  navigate('/', { state: { test: true } })}
+            onClick={() =>
+              navigate('/', {
+                state: { namespace: namespace },
+              })
+            }
             style={{ width: 150, marginTop: 10 }}
           >
             submit
