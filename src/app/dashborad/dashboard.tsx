@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 //api create_ray_env(username, cpu, memory, worker)
 
 /* eslint-disable-next-line */
-export interface DashboardProps {}
+export interface DashboardProps { }
 
 export function Dashboard(props: DashboardProps) {
   const location = useLocation();
@@ -80,7 +80,7 @@ export function Dashboard(props: DashboardProps) {
     isError: checkNamespace_isError,
   } = useQuery({
     queryKey: ['check_namespace'],
-    queryFn: () => checkNamespace(location.state.namespace),
+    queryFn: () => checkNamespace(location.state?.namespace),
     enabled: true,
     gcTime: 0,
   });
@@ -247,7 +247,7 @@ export function Dashboard(props: DashboardProps) {
           title="test"
           //改成變數
           // src="http://192.168.0.174:8265/"
-          src={`http://ray-dashboard-svc.${location.state['namespace']}:8265`}
+          src={`http://ray-dashboard-svc.${location.state?.namespace}:8265`}
           style={{
             width: '100%',
             height: '100%',
