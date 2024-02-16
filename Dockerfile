@@ -10,3 +10,4 @@ RUN npm run build
 FROM nginx:stable
 WORKDIR /app
 COPY --from=builder /app/dist/* /usr/share/nginx/html 
+COPY ./server.nginx.conf /etc/nginx/conf.d/default.conf
