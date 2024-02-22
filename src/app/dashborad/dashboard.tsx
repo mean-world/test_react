@@ -170,7 +170,7 @@ export function Dashboard(props: DashboardProps) {
   };
 
   return (
-    <Flex gap={20} vertical style={{ height: '100%' }}>
+    <Flex gap={20} vertical style={{ height: '100%', overflow: 'auto' }}>
       <div className="setting-section">
         <section className="dashboard-section section1">
           <h2 className="title">Set up distributed training environment</h2>
@@ -309,11 +309,26 @@ export function Dashboard(props: DashboardProps) {
           src={`http://ray-dashboard-svc.${location.state?.namespace}:8265`}
           style={{
             width: '100%',
-            height: '100%',
+            height: '150%',
             border: 0,
             boxShadow: '0px 0px 6px 4px #ADD8E6',
             borderRadius: '8px',
             display: create ? 'none' : 'block',
+          }}
+        ></iframe>
+        <iframe
+          title="mlflow"
+          //改成變數
+          // src="http://192.168.0.174:8265/"
+          src={`http://mlflow-dashboard-svc.mlflow-system:8265`}
+          style={{
+            width: '100%',
+            height: '150%',
+            border: 0,
+            boxShadow: '0px 0px 6px 4px #ADD8E6',
+            borderRadius: '8px',
+            display: create ? 'none' : 'block',
+            marginTop: '50px',
           }}
         ></iframe>
       </div>
