@@ -9,10 +9,9 @@ export interface RootRouteProps {}
 export function RootRoute(_props: RootRouteProps) {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
       <Route element={<ProtectRoute />}>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="*" element={<Dashboard />} />
       </Route>
     </Routes>
   );

@@ -8,7 +8,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 const Login: React.FC = () => {
   const [namespace, setnamespace] = useState('');
   const onChange_namespace = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     setnamespace(event.target.value);
   };
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
             type="primary"
             // onClick={() =>  navigate('/', { state: { test: true } })}
             onClick={() =>
-              navigate('/', {
+              navigate('/dashboard', {
                 state: { namespace: namespace },
               })
             }

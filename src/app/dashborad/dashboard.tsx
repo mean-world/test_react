@@ -1,7 +1,7 @@
 import { Button, Col, Flex, Radio, Row, Select, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
-import { checkNamespace, setTraining } from 'src/api/test';
+import { checkNamespace, setTraining, submitJob_api } from 'src/api/test';
 import { useQuery } from '@tanstack/react-query';
 import { UploadChangeParam, UploadFile } from 'antd/es/upload';
 import { DefaultModuleOptions, ModuleMethods } from 'src/constants/com-const';
@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 //api create_ray_env(username, cpu, memory, worker)
 
 /* eslint-disable-next-line */
-export interface DashboardProps { }
+export interface DashboardProps {}
 
 export function Dashboard(props: DashboardProps) {
   const location = useLocation();
@@ -30,10 +30,32 @@ export function Dashboard(props: DashboardProps) {
   const [worker_num, setworker_num] = useState<number | null>(2);
   const [isNext, setIsNext] = useState(false);
   const [create, setcreate] = useState(false);
+  const [submitJob, setSubmitJob] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [file, setFile] = useState<File>();
 
+  function dataURLtoFile(dataURL: string, filename: string): File {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
   const file_path = [];
   // 當檔案上傳變更
   const onFileUploadChange = (info: UploadChangeParam<UploadFile<unknown>>) => {
+    console.log(info);
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(info.file.originFileObj!);
+    fileReader.onload = () => {
+      const file = dataURLtoFile(fileReader.result as string, info.file.name);
+      console.log(file);
+      setFile(file);
+    };
     if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);
     }
@@ -48,17 +70,11 @@ export function Dashboard(props: DashboardProps) {
   // 調用API
   const { data, isFetching, isSuccess, isError } = useQuery({
     queryKey: ['create_ray_env'],
-    queryFn: () => setTraining('test', 2, 2, 3),
+    queryFn: () =>
+      setTraining(location.state?.namespace, cpu_num, memory_num, worker_num),
     enabled: isSendTraining,
     gcTime: 0,
   });
-  // useEffect(() => {
-  //   if (location.state['user'] === 'new') {
-  //     setcreate(true);
-  //   } else {
-  //     setIsNext(true);
-  //   }
-  // }, [location.state]);
 
   useEffect(() => {
     if (!isFetching) {
@@ -70,7 +86,7 @@ export function Dashboard(props: DashboardProps) {
         setIsNext(true);
       }
     }
-  }, [isFetching]);
+  }, [data, isError, isFetching, isSuccess]);
 
   // 調用API
   const {
@@ -96,7 +112,47 @@ export function Dashboard(props: DashboardProps) {
         }
       }
     }
-  }, [checkNamespace_isFetching]);
+  }, [
+    checkNamespace_data?.data,
+    checkNamespace_isError,
+    checkNamespace_isFetching,
+    checkNamespace_isSuccess,
+  ]);
+
+  // 調用API
+  const {
+    data: submitJob_data,
+    isFetching: submitJob_isFetching,
+    isSuccess: submitJob_isSuccess,
+    isError: submitJob_isError,
+  } = useQuery({
+    queryKey: ['submit_job'],
+    queryFn: () => {
+      return submitJob_api(
+        file,
+        selectedModule,
+        location.state?.namespace,
+        worker_num
+      );
+    },
+    enabled: submitJob,
+    staleTime: 1000,
+  });
+
+  useEffect(() => {
+    if (!submitJob_isFetching) {
+      setSubmitJob(false);
+      if (submitJob_isError) message.error(`Failed`);
+      if (submitJob_isSuccess) {
+        console.log(submitJob_data['data']);
+      }
+    }
+  }, [
+    submitJob_data,
+    submitJob_isError,
+    submitJob_isFetching,
+    submitJob_isSuccess,
+  ]);
 
   const onChange_cpu = (value: number | null) => {
     console.log('changed', value);
@@ -211,7 +267,10 @@ export function Dashboard(props: DashboardProps) {
                 <Upload
                   name="file"
                   onChange={onFileUploadChange}
-                  beforeUpload={() => false}
+                  beforeUpload={() => true}
+                  customRequest={(action) => {
+                    action.onSuccess && action.onSuccess('ok');
+                  }}
                 >
                   <Button icon={<UploadOutlined />}>
                     Click to Upload your model
@@ -223,7 +282,7 @@ export function Dashboard(props: DashboardProps) {
             <Col>
               <Button
                 type="primary"
-                // onClick={() => setIsSendTraining(true)}
+                onClick={() => setSubmitJob(true)}
                 loading={isFetching}
                 disabled={!isNext}
               >
