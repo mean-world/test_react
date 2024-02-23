@@ -14,6 +14,7 @@ export const setTraining = async (
 export const checkNamespace = async (username: string) => {
   return apiClient.get('/check_namespace', {
     params: { username },
+    headers: { 'Access-Control-Allow-Origin': '*' },
   });
 };
 
