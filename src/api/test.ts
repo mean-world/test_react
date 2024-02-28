@@ -11,10 +11,18 @@ export const setTraining = async (
   });
 };
 
+// export const checkNamespace = async (username: string) => {
+//   return apiClient.get('/check_namespace', {
+//     params: { username },
+//   });
+// };
+
 export const checkNamespace = async (username: string) => {
-  return apiClient.get('/check_namespace', {
+  return apiClient.get('/test', {
     params: { username },
-    headers: { 'Access-Control-Allow-Origin': '*' },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
   });
 };
 

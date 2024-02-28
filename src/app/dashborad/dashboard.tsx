@@ -1,5 +1,15 @@
-import { Button, Col, Flex, Radio, Row, Select, Upload, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Col,
+  Flex,
+  Input,
+  Radio,
+  Row,
+  Select,
+  Upload,
+  message,
+} from 'antd';
+import { UploadOutlined, UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { checkNamespace, setTraining, submitJob_api } from 'src/api/test';
 import { useQuery } from '@tanstack/react-query';
@@ -8,6 +18,7 @@ import { DefaultModuleOptions, ModuleMethods } from 'src/constants/com-const';
 import { InputNumber } from 'antd';
 import { useLocale } from 'antd/es/locale';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 //api create_ray_env(username, cpu, memory, worker)
 
@@ -169,8 +180,41 @@ export function Dashboard(props: DashboardProps) {
     setworker_num(value);
   };
 
+  const [namespace, setnamespace] = useState('');
+  const onChange_namespace = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log(event.target.value);
+    setnamespace(event.target.value);
+  };
+
   return (
     <Flex gap={20} vertical style={{ height: '100%', overflow: 'auto' }}>
+      <Input
+        size="large"
+        placeholder="username"
+        prefix={<UserOutlined />}
+        maxLength={100}
+        style={{ width: 150 }}
+        value={namespace}
+        onChange={onChange_namespace}
+      />
+      <Button
+        type="primary"
+        onClick={() => {
+          axios
+            .get(`${namespace}`)
+            .then((res) => {
+              console.log(res);
+              message.info('suess');
+            })
+            .catch((res) => {
+              console.log(res);
+              message.error('error');
+            });
+        }}
+      >
+        Create
+      </Button>
+
       <div className="setting-section">
         <section className="dashboard-section section1">
           <h2 className="title">Set up distributed training environment</h2>
