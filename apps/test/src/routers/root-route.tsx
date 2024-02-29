@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-import Dashboard from 'src/app/dashborad/dashboard';
-import Login from 'src/app/login/login';
 import ProtectRoute from './protect-route';
+import Login from '../app/login/login';
+import Dashboard from '../app/dashborad/dashboard';
 
 /* eslint-disable-next-line */
-export interface RootRouteProps {}
+export interface RootRouteProps { }
 
 export function RootRoute(_props: RootRouteProps) {
   return (

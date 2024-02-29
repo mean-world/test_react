@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React from 'react';
 import { Layout } from 'antd';
-import { RootRoute } from 'src/routers';
+import { RootRoute } from '../../src/routers';
 
 const { Header, Content, Footer } = Layout;
 
