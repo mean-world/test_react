@@ -11,19 +11,19 @@ import {
 } from 'antd';
 import { UploadOutlined, UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
-import { checkNamespace, setTraining, submitJob_api } from 'src/api/test';
 import { useQuery } from '@tanstack/react-query';
 import { UploadChangeParam, UploadFile } from 'antd/es/upload';
-import { DefaultModuleOptions, ModuleMethods } from 'src/constants/com-const';
 import { InputNumber } from 'antd';
 import { useLocale } from 'antd/es/locale';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { DefaultModuleOptions, ModuleMethods } from '../../constants/com-const';
+import { checkNamespace, setTraining, submitJob_api } from '../../api/test';
 
 //api create_ray_env(username, cpu, memory, worker)
 
 /* eslint-disable-next-line */
-export interface DashboardProps {}
+export interface DashboardProps { }
 
 export function Dashboard(props: DashboardProps) {
   const location = useLocation();

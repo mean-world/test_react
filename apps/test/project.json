@@ -1,24 +1,32 @@
 {
   "name": "test",
-  "$schema": "node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "./src",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/test/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "compiler": "babel",
-        "outputPath": "dist/test",
-        "index": "src/index.html",
+        "outputPath": "dist/test/app",
+        "index": "apps/test/src/index.html",
         "baseHref": "/",
-        "main": "src/main.tsx",
-        "tsConfig": "tsconfig.app.json",
-        "assets": ["src/favicon.ico", "src/assets"],
-        "styles": ["src/styles.css"],
+        "main": "apps/test/src/main.tsx",
+        "tsConfig": "apps/test/tsconfig.app.json",
+        "assets": [
+          "apps/test/src/favicon.ico",
+          "apps/test/src/assets"
+        ],
+        "styles": [
+          "apps/test/src/styles.css"
+        ],
         "scripts": [],
-        "webpackConfig": "webpack.config.js"
+        "isolatedConfig": true,
+        "webpackConfig": "apps/test/webpack.config.js"
       },
       "configurations": {
         "development": {
@@ -30,8 +38,8 @@
         "production": {
           "fileReplacements": [
             {
-              "replace": "src/environments/environment.ts",
-              "with": "src/environments/environment.prod.ts"
+              "replace": "apps/test/src/environments/environment.ts",
+              "with": "apps/test/src/environments/environment.prod.ts"
             }
           ],
           "optimization": true,
@@ -48,7 +56,8 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "test:build",
-        "hmr": true
+        "hmr": true,
+        "proxyConfig": "apps/test/proxy.conf.json"
       },
       "configurations": {
         "development": {
@@ -62,18 +71,39 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["./src"]
+        "lintFilePatterns": [
+          "apps/test/src"
+        ]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectName}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectName}"
+      ],
       "options": {
-        "jestConfig": "jest.config.ts"
+        "jestConfig": "apps/test/jest.config.ts"
+      }
+    },
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "engine": "docker",
+        "platforms": [
+          "linux/amd64"
+        ]
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": [
+    "backend"
+  ]
 }
